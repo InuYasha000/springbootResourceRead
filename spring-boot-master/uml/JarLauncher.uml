@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.boot.loader.JarLauncher</OriginalElement>
+  <nodes>
+    <node x="327.0" y="111.0">org.springframework.boot.loader.PropertiesLauncher</node>
+    <node x="0.0" y="224.0">org.springframework.boot.loader.WarLauncher</node>
+    <node x="27.0" y="111.0">org.springframework.boot.loader.ExecutableArchiveLauncher</node>
+    <node x="174.0" y="222.0">org.springframework.boot.loader.JarLauncher</node>
+    <node x="236.25" y="0.0">org.springframework.boot.loader.Launcher</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.boot.loader.ExecutableArchiveLauncher" target="org.springframework.boot.loader.Launcher">
+      <point x="0.0" y="-30.5" />
+      <point x="167.0" y="86.0" />
+      <point x="269.0" y="86.0" />
+      <point x="-32.75" y="30.5" />
+    </edge>
+    <edge source="org.springframework.boot.loader.PropertiesLauncher" target="org.springframework.boot.loader.Launcher">
+      <point x="0.0" y="-30.5" />
+      <point x="436.5" y="86.0" />
+      <point x="334.5" y="86.0" />
+      <point x="32.75" y="30.5" />
+    </edge>
+    <edge source="org.springframework.boot.loader.JarLauncher" target="org.springframework.boot.loader.ExecutableArchiveLauncher">
+      <point x="0.0" y="-30.5" />
+      <point x="255.5" y="197.0" />
+      <point x="237.0" y="197.0" />
+      <point x="70.0" y="30.5" />
+    </edge>
+    <edge source="org.springframework.boot.loader.WarLauncher" target="org.springframework.boot.loader.ExecutableArchiveLauncher">
+      <point x="0.0" y="-30.5" />
+      <point x="78.5" y="197.0" />
+      <point x="97.0" y="197.0" />
+      <point x="-70.0" y="30.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="140.0" y="141.5" />
+  <SelectedNodes>
+    <node>org.springframework.boot.loader.WarLauncher</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

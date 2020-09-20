@@ -40,6 +40,8 @@ import java.util.*;
  * @author Dave Syer
  * @author Oliver Gierke
  */
+// 就是将使用 @AutoConfigurationPackage 注解的类所在的包（package），注册成一个 Spring IoC 容器中的 Bean
+// 后续有其它模块需要使用，就可以通过获得该 Bean ，从而获得所在的包
 public abstract class AutoConfigurationPackages {
 
 	private static final Log logger = LogFactory.getLog(AutoConfigurationPackages.class);
@@ -52,6 +54,7 @@ public abstract class AutoConfigurationPackages {
 	 * @param beanFactory the source bean factory
 	 * @return true if there are auto-config packages available
 	 */
+	// 判断是否存在该 BEAN 在传入的容器中
 	public static boolean has(BeanFactory beanFactory) {
 		return beanFactory.containsBean(BEAN) && !get(beanFactory).isEmpty();
 	}
@@ -62,6 +65,7 @@ public abstract class AutoConfigurationPackages {
 	 * @return a list of auto-configuration packages
 	 * @throws IllegalStateException if auto-configuration is not enabled
 	 */
+	//获得 BEAN
 	public static List<String> get(BeanFactory beanFactory) {
 		try {
 			return beanFactory.getBean(BEAN, BasePackages.class).get();
@@ -114,6 +118,7 @@ public abstract class AutoConfigurationPackages {
 
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
+			//注册一个用于存储包名（package）的 Bean 到 Spring IoC 容器中
 			register(registry, new PackageImport(metadata).getPackageName());
 		}
 

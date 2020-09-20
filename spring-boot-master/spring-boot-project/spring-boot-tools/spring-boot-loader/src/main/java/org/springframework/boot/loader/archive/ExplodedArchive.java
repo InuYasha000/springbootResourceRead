@@ -40,6 +40,8 @@ import java.util.jar.Manifest;
  * @author Phillip Webb
  * @author Andy Wilkinson
  */
+//ExplodedArchive 是针对目录的 Archive 实现类。 BOOT-INF/classes/ 目录
+//JarFileArchive 是针对 jar 包的 Archive 实现类。 BOOT-INF/lib/ 的内嵌 jar 包。
 public class ExplodedArchive implements Archive {
 
 	private static final Set<String> SKIPPED_NAMES = new HashSet<>(
@@ -97,6 +99,7 @@ public class ExplodedArchive implements Archive {
 		}
 		return this.manifest;
 	}
+
 
 	@Override
 	public List<Archive> getNestedArchives(EntryFilter filter) throws IOException {

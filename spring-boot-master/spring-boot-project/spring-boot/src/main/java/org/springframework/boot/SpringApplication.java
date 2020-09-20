@@ -284,12 +284,14 @@ public class SpringApplication {
 		this.resourceLoader = resourceLoader;
 		Assert.notNull(primarySources, "PrimarySources must not be null");
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
+		// 通过 classpath ，判断 Web 应用类型。
 		this.webApplicationType = WebApplicationType.deduceFromClasspath();
 		// 初始化 initializers 属性
 		setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
 		// 初始化 listeners 属性
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 		// 初始化 mainApplicationClass 属性
+		// 获得是哪个类调用了哪个 #main(String[] args) 方法，其实就是我们的启动类，这个一般用来打印日志
 		this.mainApplicationClass = deduceMainApplicationClass();
 	}
 
@@ -322,9 +324,11 @@ public class SpringApplication {
 		//
 		ConfigurableApplicationContext context = null;
 		Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
-		// 配置 headless 属性
+		// 配置 headless 属性 可以无视，和 AWT 相关
 		configureHeadlessProperty();
 		// 获得 SpringApplicationRunListener 的数组，并启动监听
+		// SpringApplicationRunListener 监听事件，EventPublishingRunListener 转换成对应的 SpringApplicationEvent 事件，发布到监听器们。
+		// 下文中listener调用的方法其实都是在用 EventPublishingRunListener 转换 SpringApplicationRunListener 监听事件为对应的 SpringApplicationEvent 事件，发布到监听器们。
 		SpringApplicationRunListeners listeners = getRunListeners(args);
 		listeners.starting();
 		try {
@@ -404,6 +408,7 @@ public class SpringApplication {
 		}
 	}
 
+	//主要是给 context 的属性做赋值，以及 ApplicationContextInitializer 的初始化。
 	private void prepareContext(ConfigurableApplicationContext context,
 			ConfigurableEnvironment environment, SpringApplicationRunListeners listeners,
 			ApplicationArguments applicationArguments, Banner printedBanner) {
@@ -411,7 +416,7 @@ public class SpringApplication {
 	    context.setEnvironment(environment);
 	    // 设置 context 的一些属性
 		postProcessApplicationContext(context);
-		// 初始化 ApplicationContextInitializer
+		// 初始化 ApplicationContextInitializer(spring拓展点)
 		applyInitializers(context);
         // 通知 SpringApplicationRunListener 的数组，Spring 容器准备完成。
 		listeners.contextPrepared(context);
@@ -479,10 +484,11 @@ public class SpringApplication {
 		ClassLoader classLoader = getClassLoader();
 		// Use names and ensure unique to protect against duplicates
         // 加载指定类型对应的，在 `META-INF/spring.factories` 里的类名的数组
+		//在 META-INF/spring.factories 文件中，会以 KEY-VALUE 的格式，配置每个类对应的实现类们。
 		Set<String> names = new LinkedHashSet<>(SpringFactoriesLoader.loadFactoryNames(type, classLoader));
 		// 创建对象们
 		List<T> instances = createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);
-		// 排序对象们
+		// 排序对象们  例如说，类上有 @Order 注解
 		AnnotationAwareOrderComparator.sort(instances);
 		return instances;
 	}
@@ -508,7 +514,7 @@ public class SpringApplication {
 			try {
 			    // 获得 name 对应的类
 				Class<?> instanceClass = ClassUtils.forName(name, classLoader);
-				// 判断类是否实现自 type 类
+				// 判断类是否实现自 type 类,type是父类
 				Assert.isAssignable(type, instanceClass);
 				// 获得构造方法
 				Constructor<?> constructor = instanceClass.getDeclaredConstructor(parameterTypes);

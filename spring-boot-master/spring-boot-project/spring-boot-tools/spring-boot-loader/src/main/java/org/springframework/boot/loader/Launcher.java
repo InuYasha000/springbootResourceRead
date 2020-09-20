@@ -118,6 +118,7 @@ public abstract class Launcher {
 	protected abstract List<Archive> getClassPathArchives() throws Exception;
 
 	protected final Archive createArchive() throws Exception {
+		// 获得 jar 所在的绝对路径
 		ProtectionDomain protectionDomain = getClass().getProtectionDomain();
 		CodeSource codeSource = protectionDomain.getCodeSource();
 		URI location = (codeSource != null) ? codeSource.getLocation().toURI() : null;
@@ -125,11 +126,15 @@ public abstract class Launcher {
 		if (path == null) {
 			throw new IllegalStateException("Unable to determine code source archive");
 		}
+		//root 路径为 jar 包的绝对地址，也就是说创建 JarFileArchive 对象。
+		//原因是，Launcher 所在包为 org 下，它的根目录当然是 jar 包的绝对路径
 		File root = new File(path);
 		if (!root.exists()) {
 			throw new IllegalStateException(
 					"Unable to determine code source archive from " + root);
 		}
+		// 如果是目录，则使用 ExplodedArchive 进行展开
+		// 如果不是目录，则使用 JarFileArchive
 		return (root.isDirectory() ? new ExplodedArchive(root)
 				: new JarFileArchive(root));
 	}

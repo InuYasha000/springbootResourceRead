@@ -40,6 +40,8 @@ import org.springframework.boot.loader.jar.JarFile;
  * @author Phillip Webb
  * @author Andy Wilkinson
  */
+//ExplodedArchive 是针对目录的 Archive 实现类。 BOOT-INF/classes/ 目录
+//JarFileArchive 是针对 jar 包的 Archive 实现类。 BOOT-INF/lib/ 的内嵌 jar 包。
 public class JarFileArchive implements Archive {
 
 	private static final String UNPACK_MARKER = "UNPACK:";

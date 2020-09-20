@@ -37,7 +37,9 @@ public class MainMethodRunner {
 	 * @param args incoming arguments
 	 */
 	public MainMethodRunner(String mainClass, String[] args) {
+		// <1> 设置 LaunchedURLClassLoader 作为类加载器
 		this.mainClassName = mainClass;
+		// <2> 创建 MainMethodRunner 对象，并执行 run 方法，启动 Spring Boot 应用
 		this.args = (args != null) ? args.clone() : null;
 	}
 

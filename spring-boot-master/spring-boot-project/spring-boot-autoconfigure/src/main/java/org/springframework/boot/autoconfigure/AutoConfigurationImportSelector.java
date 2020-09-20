@@ -55,6 +55,7 @@ import java.util.stream.Collectors;
  * @since 1.3.0
  * @see EnableAutoConfiguration
  */
+//处理 @EnableAutoConfiguration 注解的资源导入
 public class AutoConfigurationImportSelector
 		implements DeferredImportSelector, BeanClassLoaderAware, ResourceLoaderAware,
 		BeanFactoryAware, EnvironmentAware, Ordered {

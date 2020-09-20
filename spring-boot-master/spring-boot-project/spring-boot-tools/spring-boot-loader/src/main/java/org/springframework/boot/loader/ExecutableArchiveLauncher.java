@@ -31,6 +31,7 @@ import org.springframework.boot.loader.archive.Archive;
  */
 public abstract class ExecutableArchiveLauncher extends Launcher {
 
+	//在构造函数中调用 createArchive()
 	private final Archive archive;
 
 	public ExecutableArchiveLauncher() {
@@ -50,6 +51,8 @@ public abstract class ExecutableArchiveLauncher extends Launcher {
 		return this.archive;
 	}
 
+	// 获得启动的类的全名
+	// 从 jar 包的 MANIFEST.MF 文件的 Start-Class 配置项，获得我们设置的 Spring Boot 的主启动类。
 	@Override
 	protected String getMainClass() throws Exception {
 		Manifest manifest = this.archive.getManifest();
@@ -66,8 +69,10 @@ public abstract class ExecutableArchiveLauncher extends Launcher {
 
 	@Override
 	protected List<Archive> getClassPathArchives() throws Exception {
+		// <1> 获得所有 Archive
 		List<Archive> archives = new ArrayList<>(
-				this.archive.getNestedArchives(this::isNestedArchive));
+				this.archive.getNestedArchives(this::isNestedArchive));// 创建了 EntryFilter 匿名实现类，用于过滤 jar 包不需要的目录
+		// <2> 后续处理
 		postProcessClassPathArchives(archives);
 		return archives;
 	}

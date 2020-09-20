@@ -41,9 +41,13 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Inherited
+@Inherited //使用@Inherited 表示该注解会被子类继承，注意，仅针对类， 成员属性、方法并不受此注释的影响
+//标记这是一个 Spring Boot 配置类,继承自 @Configuration 注解，
+// 所以两者功能也一致，可以将当前类内声明的一个或多个以 @Bean 注解标记的方法的实例纳入到 Srping 容器中，并且实例名就是方法名
 @SpringBootConfiguration
+//用于开启自动配置功能，是 spring-boot-autoconfigure 项目最核心的注解
 @EnableAutoConfiguration
+//扫描指定路径下的 Component（@Componment、@Configuration、@Service 等等
 @ComponentScan(excludeFilters = {
 		@Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
 		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
